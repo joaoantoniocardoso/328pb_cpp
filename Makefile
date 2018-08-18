@@ -74,28 +74,48 @@ ifneq ($(CROSS), )
 endif
 
 ifneq ($(F_CPU),)
- 	CFLAGS += -DF_CPU=$(F_CPU)
+ 	CPPFLAGS += -DF_CPU=$(F_CPU)
+ 	CPPFLAGS += -DF_CPU=$(F_CPU)
 endif
 
 ## Special defines
 
 define CHECK_ANSWER
 	ifeq ($$($(1)), YES)
-   		CFLAGS += -D$(1)
+   		CPPFLAGS += -D$(1)
 	endif
 endef
 
 $(foreach i,$(SPECIAL_DEFS),$(eval $(call CHECK_ANSWER,$(i))))
 
-##
-
-CFLAGS += \
-	-O$(OPT) \
-	-Wall \
-	-std=gnu99 \
-	-mmcu=$(MCU)
-CFLAGSALT += \
+#---------------- Compiler Options C++ ----------------
+#  -g*:          generate debugging information
+#  -O*:          optimization level
+#  -f...:        tuning, see GCC manual and avr-libc documentation
+#  -Wall...:     warning level
+#  -Wa,...:      tell GCC to pass this to the assembler.
+#    -adhlns...: create assembler listing 
+CPPFLAGS += -g$(DEBUG)
+CPPFLAGS += -O$(OPT)
+CPPFLAGS += -mmcu=$(MCU)
+CPPFLAGS += -funsigned-char
+CPPFLAGS += -funsigned-bitfields
+CPPFLAGS += -fpack-struct
+CPPFLAGS += -fshort-enums
+CPPFLAGS += -fno-exceptions
+CPPFLAGS += -Wall
+CPPFLAGS += -Wundef
+#CPPFLAGS += -mshort-calls
+#CPPFLAGS += -fno-unit-at-a-time
+#CPPFLAGS += -Wstrict-prototypes
+#CPPFLAGS += -Wunreachable-code
+#CPPFLAGS += -Wsign-compare
+#CPPFLAGS += -Wa,-adhlns=$(<:%.cpp=$(OBJDIR)/%.lst)
+CPPFLAGS += $(patsubst %,-I%,$(EXTRAINCDIRS))
+#CPPFLAGS += $(CSTANDARD)
+CPPFLAGSALT += \
 	-D__AVR_DEV_LIB_NAME__=m328pb
+
 
 LDFLAGS = -Wl,-Map=$(OBJDIR)/$(TARGET).map
 LDFLAGS += $(patsubst %,-L%,$(EXTRALIBDIRS))
@@ -142,7 +162,7 @@ MKDIR_P := mkdir -p
 %.elf: $(OBJS)
 	@echo "Linking:" $@...
 	@echo ""
-	$(SILENT) $(CC) $(CFLAGSALT) $(CFLAGS) $(OBJS) -o $(BINDIR)/$@ $(LDFLAGS)
+	$(SILENT) $(CC) $(CPPFLAGSALT) $(CPPFLAGS) $(OBJS) -o $(BINDIR)/$@ $(LDFLAGS)
 
 %.hex: $(TARGET)
 	@echo "hex..:"
@@ -153,12 +173,12 @@ MKDIR_P := mkdir -p
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	@echo "[$(TARGET)] Compiling:" $@...
 	@echo ""
-	$(SILENT) $(CC) $(CFLAGSALT) $(CFLAGS) -MMD -MF $(@:%.o=%.d) -c $< -o $@
+	$(SILENT) $(CC) $(CPPFLAGSALT) $(CPPFLAGS) -MMD -MF $(@:%.o=%.d) -c $< -o $@
 
 $(OBJDIR)/%.d: $(SRCDIR)/%.cpp
 	@echo "[$(TARGET)] Generating dependency:" $@...
 	@echo ""
-	$(SILENT) $(CC) $(CFLAGSALT) $(CFLAGS) -MM -MT $(addsuffix .o, $(basename $@)) -MF $@ $<
+	$(SILENT) $(CC) $(CPPFLAGSALT) $(CPPFLAGS) -MM -MT $(addsuffix .o, $(basename $@)) -MF $@ $<
 
 ## Docs
 
