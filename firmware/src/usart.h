@@ -3,7 +3,7 @@
  *
  * @defgroup USART USART Module
  *
- * @brief Simple usart using pooling method, with basic functions used for debug
+ * @brief Simple (asynchrounous) usart using pooling method, with basic functions used for debug
  * purpose.
  *
  */
@@ -32,10 +32,8 @@ class Usart
 
 public:
 
-    Usart(){};
+    Usart(uint16_t, uint8_t, uint8_t);
     ~Usart(){};
-
-    void init(uint16_t ubrr, uint8_t rx, uint8_t tx);
 
     void send_char(char data);
 

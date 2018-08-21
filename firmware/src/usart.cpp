@@ -102,7 +102,7 @@ void Usart::send_buffer(uint8_t *b, uint8_t lenght)
  *      init(MYUBRR,1,1);
  * @endcode
  */
-void Usart::init(uint16_t ubrr, uint8_t rx, uint8_t tx)
+Usart::Usart(uint16_t ubrr, uint8_t rx, uint8_t tx)
 {
     // set BAUDRATE
     UBRR0H = (uint8_t)(ubrr >>8);
