@@ -29,23 +29,27 @@
 
 class Usart
 {
+    Usart& operator = (Usart other) = delete;
+    Usart(const Usart& other) = delete;
+    Usart() = default;
 
 public:
 
-    Usart(uint16_t, uint8_t, uint8_t);
-    ~Usart(){};
+    static Usart& self(){
+        static Usart self;
+        return self;
+    }
+    ~Usart() = default;
+
+    void init(uint16_t, uint8_t, uint8_t);
 
     void send_char(char data);
+    void send(uint16_t num);
+    void send(uint32_t num);
+    void send(uint8_t *b, uint8_t lenght);
+    void send(const char *s);
 
-    char receive_char(void);
-
-    void send_uint16(uint16_t num);
-
-    void send_uint32(uint32_t num);
-
-    void send_buffer(uint8_t *b, uint8_t lenght);
-
-    void send_string(const char *s);
+    char receive(void);
 
 };
 
