@@ -17,7 +17,7 @@
 //#define VERBOSE_ON
 //#define VERBOSE_ON_CAN_APP
 //#define VERBOSE_ON_MACHINE
-//#define VERBOSE_ON_ADC
+#define VERBOSE_ON_ADC
 //#define VERBOSE_ON_PWM
 #define VERBOSE_ON_INIT
 //#define VERBOSE_ON_ERROR
@@ -29,7 +29,7 @@
 #define USART_ON
 //#define CAN_ON
 //#define CAN_DEPENDENT
-//#define ADC_ON
+#define ADC_ON
 //#define MACHINE_ON
 //#define PWM_ON
 //#define LED_ON

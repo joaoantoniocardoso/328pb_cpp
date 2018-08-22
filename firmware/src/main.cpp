@@ -6,109 +6,109 @@
 void init(void)
 {
      #ifdef USART_ON
-        usart = new Usart(MYUBRR,1,1);
-        VERBOSE_MSG_INIT(usart->send_string("\n\n\nUSART... OK!\n"));
+        usart->init(MYUBRR, 1, 1);
+        VERBOSE_MSG_INIT(usart->send("\n\n\nUSART... OK!\n"));
     #endif
 
     _delay_ms(1000);
 
     #ifdef PWM_ON
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("PWM..."));
+            VERBOSE_MSG_INIT(usart->send("PWM..."));
         #endif
         pwm->init();
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
         #endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("PWM... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("PWM... OFF!\n"));
         #endif
     #endif
 
     #ifdef CAN_ON
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("CAN (500kbps)..."));
+            VERBOSE_MSG_INIT(usart->send("CAN (500kbps)..."));
 		#endif
         can->init(BITRATE_500_KBPS);
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
-            VERBOSE_MSG_INIT(usart->send_string("CAN filters..."));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send("CAN filters..."));
 		#endif
         //can_static_filter(can_filter);
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("CAN... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("CAN... OFF!\n"));
 		#endif
     #endif
 
     #ifdef ADC_ON
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("ADC..."));
+            VERBOSE_MSG_INIT(usart->send("ADC..."));
 		#endif
         adc->init();
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("ADC... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("ADC... OFF!\n"));
 		#endif
     #endif
 
     #ifdef SLEEP_ON 
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("SLEEP..."));
+            VERBOSE_MSG_INIT(usart->send("SLEEP..."));
 		#endif
         sleep->init();
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("SLEEP... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("SLEEP... OFF!\n"));
 		#endif
     #endif
 
     #ifdef WATCHDOG_ON
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("WATCHDOG..."));
+            VERBOSE_MSG_INIT(usart->send("WATCHDOG..."));
 		#endif
         wdt->init();
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("WATCHDOG... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("WATCHDOG... OFF!\n"));
 		#endif
     #endif
 
  	#ifdef MACHINE_ON
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("MACHINE..."));
+            VERBOSE_MSG_INIT(usart->send("MACHINE..."));
 		#endif
 		machine->init();
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string(" OK!\n"));
+            VERBOSE_MSG_INIT(usart->send(" OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("MACHINE... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("MACHINE... OFF!\n"));
 		#endif
 	#endif
 	
     #ifdef LED_ON
         set_bit(LED_DDR, LED);                      // LED como saída
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("LED... OK!\n"));
+            VERBOSE_MSG_INIT(usart->send("LED... OK!\n"));
 		#endif
     #else
         #ifdef USART_ON
-            VERBOSE_MSG_INIT(usart->send_string("LED... OFF!\n"));
+            VERBOSE_MSG_INIT(usart->send("LED... OFF!\n"));
 		#endif
     #endif
 
@@ -167,9 +167,9 @@ ISR(BADISR_vect)
 {
     for(;;){
         #ifdef USART_ON
-            VERBOSE_MSG_ERROR(usart->send_string("\nFATAL ERROR: BAD ISR."));
+            VERBOSE_MSG_ERROR(usart->send("\nFATAL ERROR: BAD ISR."));
             #ifdef WATCHDOG_ON
-                VERBOSE_MSG_ERROR(usart->send_string("WAITING FOR WATCHDOG TO RESET...\n"));
+                VERBOSE_MSG_ERROR(usart->send("WAITING FOR WATCHDOG TO RESET...\n"));
             #endif
         #endif
         #ifdef DEBUG_ON

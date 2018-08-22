@@ -42,6 +42,7 @@ Usart *usart;
 
 #ifdef ADC_ON 
 #include "adc.h"
+Adc *adc;
 #pragma message("ADC: ON!")
 #else
 #pragma message("ADC: OFF!")
@@ -81,9 +82,11 @@ Usart *usart;
 #pragma message("SLEEP: OFF!")
 #endif /*ifdef SLEEP_ON*/
 
+
 using namespace std;
 
 int main(void);
+
 
 #endif /* ifndef MAIN_H */
 
